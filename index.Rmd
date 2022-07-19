@@ -1,0 +1,32 @@
+---
+title: "Compounder website prototype"
+date: "Updated: `r Sys.time()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+stock_code_i <- "NasdaqGS:GOOGL"
+
+company_name <- dt_stocks_once[stock_code==stock_code_i]$`Company Name`
+currency <- dt_stocks_once[stock_code==stock_code_i]$Currency
+```
+
+
+# `r company_name`
+
+`r stock_code_i`
+
+Currency: `r currency`
+
+
+For the table below:
+
+- Gross values are used
+- Units are $M or M for number of shares.
+
+```{r}
+gen_data_table(stock_code_i)
+
+```
+

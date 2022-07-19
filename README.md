@@ -2,6 +2,25 @@
 
 Generates a website tracking financial metrics of specified stocks based on automated data acquisition from S&P Capital IQ.
 
+## Status
+
+-   [x] CapIQ data acquisition automated
+-   [x] First test case retrieving GOOGL
+    -   [x] Retrieve once-only and FY metrics
+    -   [ ] Generate test webpage
+        -   [ ] Data
+            -   [x] Gross values
+            -   [ ] Per share as default
+            -   [ ] Add units to table
+        -   [ ] Profitability
+        -   [ ] Cash Generation/Conversion
+        -   [ ] Financial Stability/Leverage
+        -   [ ] Growth
+        -   [ ] Valuation
+-   [ ] Add other stocks
+-   [ ] Automate website refresh
+-   [ ] Add licence
+
 ## Software requirements
 
 -   Windows
@@ -24,12 +43,3 @@ Generates a website tracking financial metrics of specified stocks based on auto
 ## How to add/remove stocks
 
 Edit the file `data_provided/stocks.csv`
-
-## Status
-
--   [x] CapIQ data acquisition automated
--   [ ] Test case retrieving GOOGL
-    -   [ ] Retrieve all financial metrics
-    -   [ ] Generate webpage
--   [ ] Add other stocks
--   [ ] Automate website refresh

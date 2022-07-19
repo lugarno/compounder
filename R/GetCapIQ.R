@@ -1,5 +1,4 @@
 
-
 GetCapIQ <- function(formulas, close_excel = FALSE, silent_system = TRUE) {
   
   message("Starting CapIQ data retrieval\n - Any Excel instances will be terminated.\n - Do not interact with Windows before data retrieval confirmation message.")
@@ -14,11 +13,11 @@ GetCapIQ <- function(formulas, close_excel = FALSE, silent_system = TRUE) {
   if(n_cells > row_limit) stop("Number of CapIQ queries exceed limit")
   
   # kill existing excel processes
- try(system("Taskkill /IM Excel.exe /F",ignore.stderr = silent_system, ignore.stdout = silent_system), silent = silent_system)
+  try(system("Taskkill /IM Excel.exe /F",ignore.stderr = silent_system, ignore.stdout = silent_system), silent = silent_system)
   
   # launch excel and find workbook COM
   system('explorer "template.xlsm')
-
+  
   message("Waiting for Excel start", appendLF = FALSE)
   
   ex <- NULL
@@ -52,7 +51,7 @@ GetCapIQ <- function(formulas, close_excel = FALSE, silent_system = TRUE) {
   message("Waiting for CapIQ", appendLF = FALSE)
   Sys.sleep(2)
   ex$Run("ThisWorkbook.RefreshCapIQ")
-
+  
   # get results when ready
   have_results <- FALSE
   while(!have_results) {
@@ -116,7 +115,7 @@ if(FALSE){
   
   formulas <- c('=@CIQ("NasdaqGS:GOOGL", "IQ_LASTSALEPRICE", "2021-01-02", "LOCAL")')
   GetCapIQ(formulas, close_excel = TRUE)
-                
+  
   formulas <- c('=@CIQ("NasdaqGS:GOOGL", "IQ_LASTSALEPRICE", "2021-02-02", "LOCAL")',
                 '=@CIQ("NasdaqGS:GOOGL", "IQ_LASTSALEPRICE", "2021-03-10", "LOCAL")')
   GetCapIQ(formulas, close_excel = TRUE)
