@@ -1,2 +1,3 @@
-﻿stock_code,stock_name,comment
-GOOGL,Alphabet,This is a comment
+stock_code
+NasdaqGS:GOOGL
+NasdaqGS:PYPL

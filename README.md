@@ -10,10 +10,16 @@ Generates a website tracking financial metrics of specified stocks based on auto
 -   Excel
 -   [S&P Capital IQ Pro Office and S&P Capital IQ Pro Office Tools](https://www.capitaliq.spglobal.com/web/client?auth=inherit#apps/capitaliqprooffice)
 
-## Before running
+## Steps before running
 
 -   Open `template.xlsxm` and enable macros
 -   Sign into the S&P Excel plugin
+
+# Important notes on interaction with Excel and CapIQ
+
+-   Excel is controlled from R to retrieve CapIQ data
+-   Any running instances of Excel will be automatically terminated when accessing CapIQ
+-   Do not interact with Excel or switch to another window while Excel is being accessed, this may cause errors
 
 ## How to add/remove stocks
 
