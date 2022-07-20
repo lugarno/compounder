@@ -27,7 +27,7 @@ Generates a website tracking financial metrics of specified stocks based on auto
 -   R
 -   [RDCOMClient package forked by BSchamberger](https://github.com/BSchamberger/RDCOMClient)
 -   Excel
--   [S&P Capital IQ Pro Office and S&P Capital IQ Pro Office Tools](https://www.capitaliq.spglobal.com/web/client?auth=inherit#apps/capitaliqprooffice)
+-   [S&P Capital IQ Pro Office Tools](https://www.capitaliq.spglobal.com/web/client?auth=inherit#apps/capitaliqprooffice)
 
 ## Steps before running
 
