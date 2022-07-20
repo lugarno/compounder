@@ -4,7 +4,7 @@
 datatable_std2 <- function(df, scrollY_override = FALSE, ordering = TRUE, ...) {
   DT::datatable(df,
                 rownames = FALSE,
-                extensions = c('Buttons'),
+                extensions = c('Buttons', 'FixedColumns'),
                 options = list(autoWidth=FALSE,
                                ordering = ordering,
                                # columnDefs = list(list(className = "dt-center", targets = 1:(ncol(df)-1))),
@@ -12,6 +12,7 @@ datatable_std2 <- function(df, scrollY_override = FALSE, ordering = TRUE, ...) {
                                dom = 'rtBp',
                                scrollY = if(!scrollY_override & (nrow(df) > 12)) { "500px"} else {NULL},
                                scrollX = "500px",
+                               fixedColumns = list(leftColumns = 1),
                                buttons = c('copy', 'csv', 'excel')),...) %>% 
     formatStyle(1:(ncol(df)-1), textAlign = 'right')
   

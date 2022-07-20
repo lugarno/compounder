@@ -89,7 +89,7 @@ dt_retrieve[, metric_value := GetCapIQ(metric_formula, close = TRUE)]
 # Process once-off results ------------------------------------------------
 
 
-dt_stocks_once <- dcast.data.table(dt_retrieve[metric_freq == "once"], stock_code ~ metric_name)
+dt_stocks_once <- dcast.data.table(dt_retrieve[metric_freq == "once"], stock_code ~ metric_name, value.var = "metric_value")
 
 numeric_cols <- setdiff(names(dt_stocks_once), c("stock_code","Company Name","Currency"))
 dt_stocks_once[, (numeric_cols) := lapply(.SD, as.numeric), .SDcols = numeric_cols]
