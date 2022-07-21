@@ -5,19 +5,25 @@ Generates a website tracking financial metrics of specified stocks based on auto
 ## Status
 
 -   [x] CapIQ data acquisition automated
--   [x] First test case retrieving GOOGL
+-   [ ] First test case retrieving GOOGL
     -   [x] Retrieve once-only and FY metrics
-    -   [ ] Generate test webpage
-        -   [ ] Data
+    -   [x] Generate test webpage with all data
+        -   [x] Data
+            -   [x] Per share values
             -   [x] Gross values
-            -   [ ] Per share as default
-            -   [ ] Add units to table
-        -   [ ] Profitability
-        -   [ ] Cash Generation/Conversion
-        -   [ ] Financial Stability/Leverage
-        -   [ ] Growth
-        -   [ ] Valuation
+        -   [x] Profitability
+        -   [x] Cash Generation/Conversion
+        -   [x] Financial Stability/Leverage
+        -   [x] Growth
+        -   [x] Valuation
+    -   [x] Add units to table
+    -   [ ] Table formatting
+        -   [x] Placeholder sections
+        -   [ ] Show/hide sections
+    -   [ ] Data section to per-share with gross values as tooltip?
 -   [ ] Add other stocks
+    -   [ ] Dynamic units based on currency
+
 -   [ ] Automate website refresh
 -   [ ] Add licence
 
@@ -42,4 +48,4 @@ Generates a website tracking financial metrics of specified stocks based on auto
 
 ## How to add/remove stocks
 
-Edit the file `data_provided/stocks.csv`
+Edit `data_provided/stocks.csv`

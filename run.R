@@ -48,6 +48,8 @@ dt_metrics[, metric_formula := gsub("^\"\"","", metric_formula)]
 dt_metrics[, metric_formula := gsub("\"\"$","", metric_formula)]
 dt_metrics[, metric_formula := gsub("\"\"","\"", metric_formula)]
 
+dt_metrics[, metric_name := paste0(metric_name_in,"_", metric_unit)]
+
 
 # Prep data retrieval -----------------------------------------------------
 
@@ -89,23 +91,50 @@ dt_retrieve[, metric_value := GetCapIQ(metric_formula, close = TRUE)]
 # Process once-off results ------------------------------------------------
 
 
-dt_stocks_once <- dcast.data.table(dt_retrieve[metric_freq == "once"], stock_code ~ metric_name, value.var = "metric_value")
+dt_stats_once <- dcast.data.table(dt_retrieve[metric_freq == "once"], stock_code ~ metric_name, value.var = "metric_value")
 
-numeric_cols <- setdiff(names(dt_stocks_once), c("stock_code","Company Name","Currency"))
-dt_stocks_once[, (numeric_cols) := lapply(.SD, as.numeric), .SDcols = numeric_cols]
-dt_stocks_once[, `(-) Cash` := -`(-) Cash`] # Values from Excel have not been negated already
+numeric_cols <- setdiff(names(dt_stats_once), c("stock_code","Company Name_text","Currency_text"))
+dt_stats_once[, (numeric_cols) := lapply(.SD, as.numeric), .SDcols = numeric_cols]
+dt_stats_once[, `(-) Cash` := -`(-) Cash_$M`] # Values from Excel have not been negated already
 
 
 # Process FY results ------------------------------------------------------
 
 
-dt_stocks_fy <- dcast.data.table(dt_retrieve[metric_freq == "fy"], stock_code + fy_code  ~ metric_name, value.var = "metric_value")
+dt_stats_fy <- dcast.data.table(dt_retrieve[metric_freq == "fy"], stock_code + fy_code  ~ metric_name, value.var = "metric_value")
 
-numeric_cols <- setdiff(names(dt_stocks_fy), c("stock_code","fy_code"))
-dt_stocks_fy[, (numeric_cols) := lapply(.SD, as.numeric), .SDcols = numeric_cols]
+numeric_cols <- setdiff(names(dt_stats_fy), c("stock_code","fy_code"))
+dt_stats_fy[, (numeric_cols) := lapply(.SD, as.numeric), .SDcols = numeric_cols]
 
 # calculated results
-dt_stocks_fy[, `Free Cash Flow` := `Capital Expenditure` + `Cash from Operations (Operating Cash Flow)`]
+dt_stats_fy[, `Free Cash Flow_$M` := `Capital Expenditure_$M` + `Cash from Operations (Operating Cash Flow)_$M`]
+
+dt_stats_fy[, `Gross Profit Margin_%` := `Gross Profit_$M`/`Revenue_$M` * 100]
+dt_stats_fy[, `Net Profit Margin_%` := `Statutory Net Profit_$M`/`Revenue_$M` * 100]
+dt_stats_fy[, `Return on Invested Capital_%` := `Statutory Net Profit_$M`/(`Total Debt_$M` + `Total Equity_$M`) * 100]
+dt_stats_fy[, `Cash Conversion Ratio_X` := `Cash from Operations (Operating Cash Flow)_$M`/`EBITDA_$M`]
+dt_stats_fy[, `Debt/Equity_%` := `Total Debt_$M`/`Total Equity_$M` * 100]
+dt_stats_fy[, `Interest Coverage_X` := -(`EBITDA_$M` - `Depreciation & Amortisation_$M`)/`Interest Expense_$M` ]
+
+dt_stats_fy[, `Revenue Per Share_$` := `Revenue_$M`/`Diluted Shares Outstanding_M`]
+dt_stats_fy[, `Gross Profit Per Share_$` := `Gross Profit_$M`/`Diluted Shares Outstanding_M`]
+dt_stats_fy[, `Statutory Net Profit Per Share_$` := `Statutory Net Profit_$M`/`Diluted Shares Outstanding_M`]
+dt_stats_fy[, `Free Cash Flow Per Share_$` := `Free Cash Flow_$M`/`Diluted Shares Outstanding_M`]
+
+dt_stats_fy[, `Revenue Per Share 5yr CAGR_%` := ((`Revenue Per Share_$`/shift(`Revenue Per Share_$`,5))^(1/5) - 1)*100, by = stock_code]
+dt_stats_fy[, `Free Cash Flow Per Share 5yr CAGR_%` := ((`Free Cash Flow Per Share_$`/shift(`Free Cash Flow Per Share_$`,5))^(1/5) - 1)*100, by= stock_code]
+
+dt_stats_fy[, `FCF Yield_%` := `Free Cash Flow Per Share_$`/`Share Price (year-end)_$` * 100]
+dt_stats_fy[, `FCF Yield 3yr Rolling Average_%` := frollmean(`FCF Yield_%`,3), by = stock_code]
+dt_stats_fy[, `FCF Yield 5yr Rolling Average_%` := frollmean(`FCF Yield_%`,5), by = stock_code]
+
+dt_stats_fy[, `EV / EBITDA (Annual Average) 3yr Rolling Avearge_X` := frollmean(`EV / EBITDA (Annual Average)_X`,3), by = stock_code]
+dt_stats_fy[, `EV / EBITDA (Annual Average) 5yr Rolling Avearge_X` := frollmean(`EV / EBITDA (Annual Average)_X`,5), by = stock_code]
+
+dt_stats_fy[, `Dividend Yield_%` := -`Dividend_$M`/`Diluted Shares Outstanding_M`/`Share Price (year-end)_$` * 100]
+dt_stats_fy[, `Dividend Yield 3yr Rolling Avearge_%` := frollmean(`Dividend Yield_%`,3), by = stock_code]
+dt_stats_fy[, `Dividend Yield 5yr Rolling Avearge_%` := frollmean(`Dividend Yield_%`,5), by = stock_code]
+
 
 
 # Make website ------------------------------------------------------------
